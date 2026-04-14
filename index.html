@@ -1084,20 +1084,28 @@ function loadQuestion() {
   const progress = (globalQ / 30) * 100;
   document.getElementById('progress-bar').style.width = progress + '%';
 
-  // Shuffle options, track where correct answer ends up
-  const correctText = q.opts[q.ans];
-  const shuffledOpts = [...q.opts];
-  for (let i = shuffledOpts.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffledOpts[i], shuffledOpts[j]] = [shuffledOpts[j], shuffledOpts[i]];
-  }
-  activeAns = shuffledOpts.indexOf(correctText);
+  // Place correct answer at a truly random position among the 4 options
+  const correctText = q.opts[0]; // correct is always index 0 in the data
+  const wrongOpts = [q.opts[1], q.opts[2], q.opts[3]];
 
-  // Options
+  // Shuffle the 3 wrong options
+  for (let i = wrongOpts.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [wrongOpts[i], wrongOpts[j]] = [wrongOpts[j], wrongOpts[i]];
+  }
+
+  // Pick a random slot (0–3) for the correct answer
+  activeAns = Math.floor(Math.random() * 4);
+
+  // Build final 4-option array: insert correct answer at activeAns
+  const finalOpts = [...wrongOpts];
+  finalOpts.splice(activeAns, 0, correctText);
+
+  // Render options
   const grid = document.getElementById('options-grid');
   grid.innerHTML = '';
   const letters = ['A','B','C','D'];
-  shuffledOpts.forEach((opt, i) => {
+  finalOpts.forEach((opt, i) => {
     const btn = document.createElement('button');
     btn.className = 'option-btn';
     btn.innerHTML = `<span class="option-letter">${letters[i]}</span>${opt}`;
