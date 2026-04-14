@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NetApp CPQ Quiz Challenge</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --nb: #0067C5;
+    --nb-dark: #003F8A;
+    --nb-deep: #001F55;
+    --nb-light: #00AAFF;
+    --nb-glow: rgba(0,103,197,0.35);
+    --accent: #00D4FF;
+    --success: #00C48C;
+    --danger: #FF4D6A;
+    --warn: #FFB800;
+    --bg: #06101F;
+    --surface: #0C1A2E;
+    --surface2: #112240;
+    --border: rgba(0,103,197,0.25);
+    --text: #E8F4FF;
+    --text-muted: #7A9EC0;
+    --radius: 16px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 10% 0%, rgba(0,103,197,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 90% 100%, rgba(0,212,255,0.10) 0%, transparent 55%),
+      radial-gradient(ellipse 40% 40% at 50% 50%, rgba(0,63,138,0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Grid overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,103,197,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,103,197,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper { position: relative; z-index: 1; min-height: 100vh; display: flex; flex-direction: column; }
+
+  /* HEADER */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 40px;
+    background: rgba(6,16,31,0.85);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(20px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .logo-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.5px;
+  }
+
+  .header-badge {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(0,212,255,0.08);
+    border: 1px solid rgba(0,212,255,0.2);
+    padding: 5px 14px;
+    border-radius: 20px;
+  }
+
+  .header-score {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .header-score span {
+    color: var(--accent);
+    font-size: 20px;
+  }
+
+  /* MAIN AREA */
+  main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+
+  .screen { width: 100%; max-width: 760px; }
+
+  /* ===== WELCOME SCREEN ===== */
+  #screen-welcome { text-align: center; }
+
+  .welcome-tag {
+    display: inline-block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(0,212,255,0.08);
+    border: 1px solid rgba(0,212,255,0.2);
+    padding: 6px 18px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+  }
+
+  .welcome-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(52px, 8vw, 84px);
+    font-weight: 800;
+    line-height: 0.92;
+    letter-spacing: -1px;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+
+  .welcome-title em {
+    font-style: normal;
+    background: linear-gradient(135deg, var(--nb-light), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .welcome-sub {
+    font-size: 16px;
+    color: var(--text-muted);
+    margin: 20px auto 36px;
+    max-width: 480px;
+    line-height: 1.65;
+  }
+
+  .rules-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-bottom: 40px;
+    text-align: left;
+  }
+
+  .rule-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .rule-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .rule-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .rule-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, var(--nb), var(--nb-light));
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 12px;
+    padding: 16px 40px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 0 30px rgba(0,103,197,0.4);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 50px rgba(0,103,197,0.6);
+  }
+
+  /* ===== QUIZ SCREEN ===== */
+  #screen-quiz { display: none; }
+
+  .quiz-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .session-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--nb-light);
+  }
+
+  .q-counter {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  /* Timer */
+  .timer-ring-wrap {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+  }
+
+  .timer-ring-wrap svg { transform: rotate(-90deg); }
+
+  .timer-track { fill: none; stroke: rgba(0,103,197,0.15); stroke-width: 4; }
+  .timer-bar { fill: none; stroke-width: 4; stroke-linecap: round; transition: stroke-dashoffset 1s linear, stroke 0.3s; }
+
+  .timer-num {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text);
+  }
+
+  /* Progress bar */
+  .progress-bar-wrap {
+    height: 4px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 2px;
+    margin-bottom: 28px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--nb), var(--accent));
+    border-radius: 2px;
+    transition: width 0.5s ease;
+  }
+
+  /* Question card */
+  .question-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 36px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .question-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--nb), var(--accent), var(--nb));
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+  }
+
+  @keyframes shimmer { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+
+  .q-number {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--nb-light);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .q-number::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .q-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(22px, 3.5vw, 30px);
+    font-weight: 700;
+    line-height: 1.25;
+    color: #fff;
+    letter-spacing: -0.3px;
+  }
+
+  /* Options */
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .option-btn {
+    background: var(--surface2);
+    border: 1.5px solid rgba(0,103,197,0.2);
+    border-radius: 12px;
+    padding: 16px 20px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    line-height: 1.4;
+  }
+
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--nb-light);
+    background: rgba(0,103,197,0.12);
+    transform: translateY(-1px);
+  }
+
+  .option-letter {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--nb-light);
+    background: rgba(0,103,197,0.15);
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .option-btn.correct {
+    border-color: var(--success);
+    background: rgba(0,196,140,0.12);
+    animation: pulse-green 0.4s;
+  }
+
+  .option-btn.correct .option-letter { background: var(--success); color: #fff; }
+
+  .option-btn.wrong {
+    border-color: var(--danger);
+    background: rgba(255,77,106,0.10);
+  }
+
+  .option-btn.wrong .option-letter { background: var(--danger); color: #fff; }
+
+  .option-btn.reveal {
+    border-color: var(--success);
+    background: rgba(0,196,140,0.08);
+  }
+
+  .option-btn.reveal .option-letter { background: var(--success); color: #fff; }
+
+  @keyframes pulse-green {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+  }
+
+  .option-btn:disabled { cursor: default; }
+
+  /* Feedback bar */
+  .feedback-bar {
+    height: 0;
+    overflow: hidden;
+    border-radius: 10px;
+    transition: height 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 20px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 0;
+  }
+
+  .feedback-bar.show {
+    height: 52px;
+    margin-bottom: 16px;
+  }
+
+  .feedback-bar.correct-fb {
+    background: rgba(0,196,140,0.12);
+    border: 1px solid rgba(0,196,140,0.3);
+    color: var(--success);
+  }
+
+  .feedback-bar.wrong-fb {
+    background: rgba(255,77,106,0.10);
+    border: 1px solid rgba(255,77,106,0.25);
+    color: var(--danger);
+  }
+
+  .feedback-bar.timeout-fb {
+    background: rgba(255,184,0,0.10);
+    border: 1px solid rgba(255,184,0,0.25);
+    color: var(--warn);
+  }
+
+  /* Next btn */
+  .btn-next {
+    display: none;
+    width: 100%;
+    background: linear-gradient(135deg, var(--nb-dark), var(--nb));
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 12px;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.25s;
+    margin-top: 8px;
+  }
+
+  .btn-next:hover { background: linear-gradient(135deg, var(--nb), var(--nb-light)); box-shadow: 0 0 30px var(--nb-glow); }
+  .btn-next.visible { display: block; }
+
+  /* ===== SESSION RESULT SCREEN ===== */
+  #screen-session { display: none; text-align: center; }
+
+  .session-result-ring {
+    width: 130px;
+    height: 130px;
+    margin: 0 auto 28px;
+    position: relative;
+  }
+
+  .session-result-ring svg { transform: rotate(-90deg); }
+  .sr-track { fill: none; stroke: rgba(0,103,197,0.15); stroke-width: 8; }
+  .sr-fill { fill: none; stroke-width: 8; stroke-linecap: round; }
+
+  .sr-inner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sr-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 38px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1;
+  }
+
+  .sr-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .session-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 48px;
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+
+  .session-subtitle { font-size: 15px; color: var(--text-muted); margin-bottom: 32px; }
+
+  .q-review {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 10px;
+    text-align: left;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .q-review-icon { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+
+  .q-review-q {
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    line-height: 1.4;
+  }
+
+  .q-review-ans {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 0.5px;
+  }
+
+  .q-review-ans strong { color: var(--success); }
+
+  /* ===== FINAL SCREEN ===== */
+  #screen-final { display: none; text-align: center; }
+
+  .confetti-wrap { position: fixed; inset: 0; pointer-events: none; z-index: 9999; }
+
+  .final-score-big {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(80px, 15vw, 140px);
+    font-weight: 800;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--nb-light), var(--accent), #fff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 4px;
+  }
+
+  .final-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 32px;
+  }
+
+  .final-grade-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px;
+    margin-bottom: 24px;
+    display: inline-block;
+    min-width: 320px;
+  }
+
+  .final-grade {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 56px;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+
+  .final-msg { font-size: 15px; color: var(--text-muted); line-height: 1.6; }
+
+  .btn-group { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 28px; }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--nb-light);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border: 1.5px solid var(--nb);
+    border-radius: 12px;
+    padding: 14px 32px;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+
+  .btn-secondary:hover { background: var(--nb); color: #fff; }
+
+  /* Utilities */
+  .hidden { display: none !important; }
+
+  @media (max-width: 580px) {
+    header { padding: 14px 18px; }
+    .question-card { padding: 22px 18px; }
+    .options-grid { grid-template-columns: 1fr; }
+    .rules-grid { grid-template-columns: 1fr; }
+    .q-text { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <svg class="logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="2" width="12" height="12" rx="2" fill="#0067C5"/>
+        <rect x="18" y="2" width="12" height="12" rx="2" fill="#0067C5"/>
+        <rect x="2" y="18" width="12" height="12" rx="2" fill="#0067C5" opacity="0.5"/>
+        <rect x="18" y="18" width="12" height="12" rx="2" fill="#0067C5" opacity="0.5"/>
+      </svg>
+      <span class="logo-text">NetApp</span>
+    </div>
+    <div class="header-badge">CPQ Quiz Challenge</div>
+    <div class="header-score" id="header-score" style="display:none">
+      Score: <span id="hdr-score-val">0</span>/<span id="hdr-total-val">0</span>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+
+    <!-- WELCOME SCREEN -->
+    <div class="screen" id="screen-welcome">
+      <div class="welcome-tag">⚡ Internship Showcase 2025</div>
+      <h1 class="welcome-title">NetApp<br><em>CPQ Quiz</em></h1>
+      <p class="welcome-sub">
+        Test your knowledge on CPQ Automation, NetApp technology, and the latest AI buzz.
+        6 sessions · 5 questions each · 30 marks total.
+      </p>
+
+      <div class="rules-grid">
+        <div class="rule-card">
+          <div class="rule-icon">⏱️</div>
+          <div>
+            <div class="rule-title">30-Second Timer</div>
+            <div class="rule-desc">Each question auto-locks when time runs out. Speed and accuracy matter!</div>
+          </div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-icon">🎯</div>
+          <div>
+            <div class="rule-title">1 Mark Per Question</div>
+            <div class="rule-desc">30 questions · 30 marks total. No negative marking — go for it!</div>
+          </div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-icon">🧩</div>
+          <div>
+            <div class="rule-title">6 Sessions</div>
+            <div class="rule-desc">5 questions per session. Review your session score before moving on.</div>
+          </div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-icon">🚫</div>
+          <div>
+            <div class="rule-title">No Going Back</div>
+            <div class="rule-desc">Once an option is selected or time expires, the answer is locked in.</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="startQuiz()">
+        🚀 Start the Challenge
+      </button>
+    </div>
+
+    <!-- QUIZ SCREEN -->
+    <div class="screen" id="screen-quiz">
+      <div class="quiz-meta">
+        <div>
+          <div class="session-label" id="session-label">Session 1 of 6</div>
+          <div class="q-counter" id="q-counter">Question 1 of 5</div>
+        </div>
+        <div class="timer-ring-wrap">
+          <svg width="64" height="64" viewBox="0 0 64 64">
+            <circle class="timer-track" cx="32" cy="32" r="28"/>
+            <circle class="timer-bar" id="timer-bar" cx="32" cy="32" r="28"
+              stroke-dasharray="175.93"
+              stroke-dashoffset="0"
+              stroke="url(#tgrad)"/>
+            <defs>
+              <linearGradient id="tgrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#0067C5"/>
+                <stop offset="100%" stop-color="#00D4FF"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="timer-num" id="timer-num">30</div>
+        </div>
+      </div>
+
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progress-bar"></div>
+      </div>
+
+      <div class="question-card">
+        <div class="q-number" id="q-number">Q1</div>
+        <div class="q-text" id="q-text">Loading question…</div>
+      </div>
+
+      <div class="options-grid" id="options-grid"></div>
+
+      <div class="feedback-bar" id="feedback-bar"></div>
+
+      <button class="btn-next" id="btn-next" onclick="nextQuestion()">Next Question →</button>
+    </div>
+
+    <!-- SESSION RESULT SCREEN -->
+    <div class="screen" id="screen-session">
+      <div class="session-result-ring">
+        <svg width="130" height="130" viewBox="0 0 130 130">
+          <circle class="sr-track" cx="65" cy="65" r="56"/>
+          <circle class="sr-fill" id="sr-fill" cx="65" cy="65" r="56"
+            stroke-dasharray="351.86"
+            stroke-dashoffset="351.86"
+            stroke="#00C48C"/>
+        </svg>
+        <div class="sr-inner">
+          <div class="sr-num" id="sr-num">0/5</div>
+          <div class="sr-label">Session Score</div>
+        </div>
+      </div>
+
+      <h2 class="session-title" id="session-result-title">Round Complete!</h2>
+      <p class="session-subtitle" id="session-result-sub">Here's how you did:</p>
+
+      <div id="session-review"></div>
+
+      <div class="btn-group">
+        <button class="btn-primary" id="btn-continue" onclick="continueQuiz()">Continue →</button>
+      </div>
+    </div>
+
+    <!-- FINAL SCREEN -->
+    <div class="screen" id="screen-final">
+      <div class="confetti-wrap" id="confetti-wrap"></div>
+      <div class="final-score-big" id="final-score-big">0</div>
+      <div class="final-label">out of 30 marks</div>
+
+      <div class="final-grade-card">
+        <div class="final-grade" id="final-grade">🏆</div>
+        <div class="final-msg" id="final-msg">Great work!</div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn-primary" onclick="resetQuiz()">🔄 Play Again</button>
+        <button class="btn-secondary" onclick="showFinalSummary()">📊 View Summary</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ===================== QUESTION BANK (30 Questions, 6 Sessions of 5) =====================
+const ALL_QUESTIONS = [
+  // ── SESSION 1: CPQ Fundamentals ──
+  {
+    q: "What does the 'C' in CPQ stand for in enterprise sales automation?",
+    opts: ["Configure", "Calculate", "Collaborate", "Consolidate"],
+    ans: 0,
+    cat: "CPQ"
+  },
+  {
+    q: "In CPQ systems, which component ensures the selected product options are technically compatible before quoting?",
+    opts: ["Configuration engine", "Approval workflow", "Price waterfall", "Discount matrix"],
+    ans: 0,
+    cat: "CPQ"
+  },
+  {
+    q: "What is a 'price waterfall' in CPQ automation primarily used for?",
+    opts: ["Visualizing all price adjustments from list to net price", "Tracking invoice history", "Generating discount approval emails", "Mapping product configurations"],
+    ans: 0,
+    cat: "CPQ"
+  },
+  {
+    q: "In NetApp's CPQ context, a 'bundle' most accurately refers to:",
+    opts: ["A group of products sold as a single unit", "A batch of customer orders", "An automated discount rule", "A configuration template for services"],
+    ans: 0,
+    cat: "CPQ"
+  },
+  {
+    q: "Which Salesforce product is most commonly integrated for enterprise CPQ workflows?",
+    opts: ["Salesforce Revenue Cloud", "Salesforce Service Cloud", "Salesforce Marketing Cloud", "Salesforce Commerce Cloud"],
+    ans: 0,
+    cat: "CPQ"
+  },
+
+  // ── SESSION 2: NetApp Products & Technology ──
+  {
+    q: "What is NetApp's flagship storage operating system that runs across on-premises and cloud environments?",
+    opts: ["ONTAP", "StorageGRID", "Element OS", "SANtricity"],
+    ans: 0,
+    cat: "NetApp"
+  },
+  {
+    q: "NetApp's BlueXP platform is primarily designed for:",
+    opts: ["Unified management of hybrid multi-cloud data infrastructure", "Automated sales quoting and pricing", "AI-powered customer support automation", "Real-time network traffic monitoring"],
+    ans: 0,
+    cat: "NetApp"
+  },
+  {
+    q: "Which NetApp service provides fully managed cloud-native file storage on AWS?",
+    opts: ["Amazon FSx for NetApp ONTAP", "NetApp Cloud Volumes ONTAP", "NetApp StorageGRID", "NetApp Keystone"],
+    ans: 0,
+    cat: "NetApp"
+  },
+  {
+    q: "NetApp's 'Keystone' offering is best described as:",
+    opts: ["A storage-as-a-service subscription model", "A cloud security compliance tool", "A hybrid cloud AI analytics platform", "A SAN switch automation framework"],
+    ans: 0,
+    cat: "NetApp"
+  },
+  {
+    q: "In which year was NetApp (Network Appliance) officially founded?",
+    opts: ["1992", "1988", "1995", "1999"],
+    ans: 0,
+    cat: "NetApp"
+  },
+
+  // ── SESSION 3: CPQ Automation & Workflow ──
+  {
+    q: "In CPQ automation, 'guided selling' primarily helps sales reps to:",
+    opts: ["Recommend optimal products based on customer needs", "Auto-generate purchase orders", "Approve discounts without manager sign-off", "Sync pricing with the ERP system"],
+    ans: 0,
+    cat: "CPQ"
+  },
+  {
+    q: "Which CPQ process step involves setting different price levels for different customer tiers?",
+    opts: ["Pricing rules engine", "Product catalog management", "Quote approval workflow", "Revenue recognition module"],
+    ans: 0,
+    cat: "CPQ"
+  },
+  {
+    q: "What does 'deal desk' refer to in the context of enterprise CPQ automation?",
+    opts: ["A team that reviews non-standard deals and pricing exceptions", "A dashboard displaying real-time quote status", "An automated discount approval bot", "A customer self-service quoting portal"],
+    ans: 0,
+    cat: "CPQ"
+  },
+  {
+    q: "Which integration is most critical for CPQ to ensure accurate product availability during quoting?",
+    opts: ["ERP system integration", "CRM email integration", "ITSM ticketing integration", "BI reporting integration"],
+    ans: 0,
+    cat: "CPQ"
+  },
+  {
+    q: "In CPQ, what is 'constraint-based configuration' designed to prevent?",
+    opts: ["Technically invalid or incompatible product combinations", "Unauthorized discounts above threshold", "Duplicate quote creation for same customer", "Expired price book usage"],
+    ans: 0,
+    cat: "CPQ"
+  },
+
+  // ── SESSION 4: AI & Industry Buzz ──
+  {
+    q: "What does RAG stand for in modern AI architectures used for enterprise search?",
+    opts: ["Retrieval-Augmented Generation", "Recurrent Adaptive Gating", "Real-time AI Generation", "Regression-based Answer Grounding"],
+    ans: 0,
+    cat: "AI"
+  },
+  {
+    q: "Which company developed the Claude AI assistant, a leading competitor to ChatGPT?",
+    opts: ["Anthropic", "Google DeepMind", "Meta AI", "Mistral AI"],
+    ans: 0,
+    cat: "AI"
+  },
+  {
+    q: "In AI terminology, a 'hallucination' refers to:",
+    opts: ["Confident AI responses that are factually incorrect", "Overfitting of training data in neural networks", "Latency spikes during model inference", "Memory leaks in transformer architectures"],
+    ans: 0,
+    cat: "AI"
+  },
+  {
+    q: "What is the primary purpose of 'fine-tuning' a large language model (LLM)?",
+    opts: ["Adapting a pre-trained model to a specific domain or task", "Compressing the model for edge deployment", "Adding a memory layer to prevent hallucinations", "Converting the model from float32 to int8 precision"],
+    ans: 0,
+    cat: "AI"
+  },
+  {
+    q: "Which AI technique allows models to use external tools like search engines or calculators at runtime?",
+    opts: ["Agentic / Tool-use frameworks", "Transfer learning", "Mixture of Experts (MoE)", "Reinforcement Learning from Human Feedback (RLHF)"],
+    ans: 0,
+    cat: "AI"
+  },
+
+  // ── SESSION 5: Cloud, Storage & Data ──
+  {
+    q: "What is the primary advantage of NetApp's 'data fabric' strategy?",
+    opts: ["Consistent data management and mobility across hybrid and multi-cloud environments", "Reducing hardware costs by virtualizing all storage", "Centralizing AI workloads in a single data center", "Automating cloud billing across AWS, Azure, and GCP"],
+    ans: 0,
+    cat: "NetApp"
+  },
+  {
+    q: "In cloud storage tiering, which tier provides the lowest latency for frequently accessed data?",
+    opts: ["Hot tier (NVMe/SSD)", "Warm tier (HDD)", "Cold tier (object storage)", "Archive tier (tape/Glacier)"],
+    ans: 0,
+    cat: "Cloud"
+  },
+  {
+    q: "Kubernetes is primarily used to manage:",
+    opts: ["Containerized application workloads and their lifecycle", "Virtual machine provisioning in private clouds", "Storage network switch configurations", "Relational database clustering"],
+    ans: 0,
+    cat: "Cloud"
+  },
+  {
+    q: "NetApp's Spot by NetApp (formerly Spot.io) focuses on optimizing:",
+    opts: ["Cloud compute cost and resource utilization using spot instances", "On-premises SAN network performance", "AI model training pipelines on GPUs", "Disaster recovery failover automation"],
+    ans: 0,
+    cat: "NetApp"
+  },
+  {
+    q: "Which protocol does NetApp ONTAP primarily use for NAS (Network Attached Storage) access?",
+    opts: ["NFS and SMB/CIFS", "iSCSI and Fibre Channel", "S3 and Swift", "FTP and SFTP"],
+    ans: 0,
+    cat: "NetApp"
+  },
+
+  // ── SESSION 6: Mixed Advanced ──
+  {
+    q: "In enterprise CPQ, 'subscription billing' automation primarily addresses which business need?",
+    opts: ["Managing recurring revenue, renewals, and mid-term contract amendments", "Automating hardware procurement for data centers", "Scheduling product demos for enterprise clients", "Generating compliance audit trails for finance teams"],
+    ans: 0,
+    cat: "CPQ"
+  },
+  {
+    q: "What is 'vector search' most commonly used for in enterprise AI applications?",
+    opts: ["Semantic similarity search across large document datasets", "Binary search in relational databases", "Image compression in storage systems", "Real-time network packet inspection"],
+    ans: 0,
+    cat: "AI"
+  },
+  {
+    q: "NetApp's ONTAP AI platform is specifically optimized for:",
+    opts: ["AI/ML training and inference workloads with NVIDIA DGX systems", "Automated SAN provisioning across data centers", "Cloud cost governance and FinOps reporting", "DevOps CI/CD pipeline orchestration"],
+    ans: 0,
+    cat: "NetApp"
+  },
+  {
+    q: "In CPQ, 'revenue recognition' automation is most closely associated with compliance under:",
+    opts: ["ASC 606 / IFRS 15 accounting standards", "SOC 2 Type II security certification", "GDPR data privacy regulation", "PCI-DSS payment card industry standard"],
+    ans: 0,
+    cat: "CPQ"
+  },
+  {
+    q: "Which emerging AI capability allows a model to autonomously break down a goal into steps and execute them sequentially?",
+    opts: ["Agentic AI / AI Agents", "Multimodal inference", "Chain-of-thought prompting only", "Few-shot in-context learning"],
+    ans: 0,
+    cat: "AI"
+  }
+];
+
+// ===================== STATE =====================
+let sessions = [];
+let currentSession = 0;
+let currentQInSession = 0;
+let sessionScore = 0;
+let totalScore = 0;
+let timerInterval = null;
+let timeLeft = 30;
+let answered = false;
+let sessionAnswers = [];
+let allAnswers = [];
+
+const TIMER_MAX = 30;
+const CIRCUMFERENCE = 175.93;
+
+// ===================== BUILD SESSIONS =====================
+function buildSessions() {
+  sessions = [];
+  for (let i = 0; i < 6; i++) {
+    sessions.push(ALL_QUESTIONS.slice(i * 5, i * 5 + 5));
+  }
+}
+
+// ===================== SCREENS =====================
+function showScreen(id) {
+  ['screen-welcome','screen-quiz','screen-session','screen-final'].forEach(s => {
+    document.getElementById(s).style.display = 'none';
+  });
+  document.getElementById(id).style.display = 'block';
+}
+
+// ===================== START =====================
+function startQuiz() {
+  buildSessions();
+  currentSession = 0;
+  currentQInSession = 0;
+  sessionScore = 0;
+  totalScore = 0;
+  sessionAnswers = [];
+  allAnswers = [];
+  document.getElementById('header-score').style.display = 'flex';
+  document.getElementById('hdr-score-val').textContent = 0;
+  document.getElementById('hdr-total-val').textContent = 0;
+  showScreen('screen-quiz');
+  loadQuestion();
+}
+
+// ===================== LOAD QUESTION =====================
+function loadQuestion() {
+  answered = false;
+  const q = sessions[currentSession][currentQInSession];
+  const globalQ = currentSession * 5 + currentQInSession;
+
+  // Meta
+  document.getElementById('session-label').textContent = `Session ${currentSession+1} of 6`;
+  document.getElementById('q-counter').textContent = `Question ${currentQInSession+1} of 5`;
+  document.getElementById('q-number').textContent = `Q${globalQ+1}`;
+  document.getElementById('q-text').textContent = q.q;
+
+  // Progress
+  const progress = (globalQ / 30) * 100;
+  document.getElementById('progress-bar').style.width = progress + '%';
+
+  // Options
+  const grid = document.getElementById('options-grid');
+  grid.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="option-letter">${letters[i]}</span>${opt}`;
+    btn.onclick = () => selectOption(i);
+    grid.appendChild(btn);
+  });
+
+  // Feedback
+  const fb = document.getElementById('feedback-bar');
+  fb.className = 'feedback-bar';
+  fb.textContent = '';
+
+  // Next btn
+  document.getElementById('btn-next').className = 'btn-next';
+
+  // Timer
+  startTimer();
+}
+
+// ===================== TIMER =====================
+function startTimer() {
+  clearInterval(timerInterval);
+  timeLeft = TIMER_MAX;
+  updateTimer();
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    updateTimer();
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      timeExpired();
+    }
+  }, 1000);
+}
+
+function updateTimer() {
+  const el = document.getElementById('timer-num');
+  const bar = document.getElementById('timer-bar');
+  el.textContent = timeLeft;
+  const ratio = timeLeft / TIMER_MAX;
+  const offset = CIRCUMFERENCE * (1 - ratio);
+  bar.style.strokeDashoffset = offset;
+
+  // Color shift
+  if (timeLeft <= 10) {
+    bar.style.stroke = '#FF4D6A';
+    el.style.color = '#FF4D6A';
+  } else if (timeLeft <= 20) {
+    bar.style.stroke = '#FFB800';
+    el.style.color = '#FFB800';
+  } else {
+    bar.style.stroke = 'url(#tgrad)';
+    el.style.color = '';
+  }
+}
+
+function timeExpired() {
+  if (answered) return;
+  answered = true;
+  const q = sessions[currentSession][currentQInSession];
+  const btns = document.querySelectorAll('.option-btn');
+  btns.forEach(b => b.disabled = true);
+  btns[q.ans].classList.add('reveal');
+
+  showFeedback('timeout', `⏰ Time's Up! Correct: ${q.opts[q.ans]}`);
+  sessionAnswers.push({ q: q.q, correct: false, answer: null, correctAns: q.opts[q.ans] });
+  allAnswers.push({ q: q.q, correct: false, answer: null, correctAns: q.opts[q.ans] });
+  document.getElementById('btn-next').className = 'btn-next visible';
+}
+
+// ===================== SELECT OPTION =====================
+function selectOption(idx) {
+  if (answered) return;
+  answered = true;
+  clearInterval(timerInterval);
+
+  const q = sessions[currentSession][currentQInSession];
+  const btns = document.querySelectorAll('.option-btn');
+  btns.forEach(b => b.disabled = true);
+
+  if (idx === q.ans) {
+    btns[idx].classList.add('correct');
+    sessionScore++;
+    totalScore++;
+    updateHeaderScore();
+    showFeedback('correct', '✅ Correct! +1 Mark');
+    sessionAnswers.push({ q: q.q, correct: true, answer: q.opts[idx], correctAns: q.opts[q.ans] });
+    allAnswers.push({ q: q.q, correct: true, answer: q.opts[idx], correctAns: q.opts[q.ans] });
+  } else {
+    btns[idx].classList.add('wrong');
+    btns[q.ans].classList.add('reveal');
+    showFeedback('wrong', `❌ Incorrect. Correct: ${q.opts[q.ans]}`);
+    sessionAnswers.push({ q: q.q, correct: false, answer: q.opts[idx], correctAns: q.opts[q.ans] });
+    allAnswers.push({ q: q.q, correct: false, answer: q.opts[idx], correctAns: q.opts[q.ans] });
+  }
+
+  document.getElementById('btn-next').className = 'btn-next visible';
+}
+
+function showFeedback(type, msg) {
+  const fb = document.getElementById('feedback-bar');
+  fb.textContent = msg;
+  fb.className = `feedback-bar show ${type === 'correct' ? 'correct-fb' : type === 'wrong' ? 'wrong-fb' : 'timeout-fb'}`;
+}
+
+function updateHeaderScore() {
+  document.getElementById('hdr-score-val').textContent = totalScore;
+  document.getElementById('hdr-total-val').textContent = (currentSession * 5) + currentQInSession + 1;
+}
+
+// ===================== NEXT QUESTION =====================
+function nextQuestion() {
+  currentQInSession++;
+  if (currentQInSession >= 5) {
+    showSessionResult();
+  } else {
+    loadQuestion();
+  }
+}
+
+// ===================== SESSION RESULT =====================
+function showSessionResult() {
+  showScreen('screen-session');
+
+  const pct = sessionScore / 5;
+  const dashoffset = 351.86 * (1 - pct);
+  const fillEl = document.getElementById('sr-fill');
+  fillEl.style.strokeDashoffset = 351.86; // reset
+  fillEl.style.stroke = sessionScore >= 4 ? '#00C48C' : sessionScore >= 2 ? '#FFB800' : '#FF4D6A';
+  setTimeout(() => {
+    fillEl.style.transition = 'stroke-dashoffset 1s ease';
+    fillEl.style.strokeDashoffset = dashoffset;
+  }, 100);
+
+  document.getElementById('sr-num').textContent = `${sessionScore}/5`;
+
+  const titles = ['Excellent Round!','Great Job!','Not Bad!','Keep Pushing!','Tough Session!','Almost There!'];
+  const idx = Math.min(5 - sessionScore, 5);
+  document.getElementById('session-result-title').textContent = sessionScore === 5 ? '🔥 Perfect Session!' : titles[idx];
+  document.getElementById('session-result-sub').textContent = `You scored ${sessionScore} out of 5 this round. Running total: ${totalScore} marks`;
+
+  // Review
+  const review = document.getElementById('session-review');
+  review.innerHTML = '';
+  sessionAnswers.forEach((a, i) => {
+    const d = document.createElement('div');
+    d.className = 'q-review';
+    d.innerHTML = `
+      <div class="q-review-icon">${a.correct ? '✅' : '❌'}</div>
+      <div>
+        <div class="q-review-q">${a.q}</div>
+        <div class="q-review-ans">Correct: <strong>${a.correctAns}</strong></div>
+      </div>
+    `;
+    review.appendChild(d);
+  });
+
+  const continueBtn = document.getElementById('btn-continue');
+  continueBtn.textContent = currentSession < 5 ? `Start Session ${currentSession+2} →` : '🏁 See Final Results';
+}
+
+// ===================== CONTINUE =====================
+function continueQuiz() {
+  currentSession++;
+  currentQInSession = 0;
+  sessionScore = 0;
+  sessionAnswers = [];
+
+  if (currentSession >= 6) {
+    showFinalResults();
+  } else {
+    showScreen('screen-quiz');
+    loadQuestion();
+  }
+}
+
+// ===================== FINAL RESULTS =====================
+function showFinalResults() {
+  showScreen('screen-final');
+  document.getElementById('final-score-big').textContent = totalScore;
+
+  let grade, msg, gradeColor;
+  if (totalScore >= 27) {
+    grade = '🏆 Legend'; msg = 'Outstanding performance! You clearly mastered CPQ at NetApp.'; gradeColor = '#00C48C';
+  } else if (totalScore >= 22) {
+    grade = '🥇 Expert'; msg = 'Impressive! You have a strong command of NetApp & CPQ concepts.'; gradeColor = '#00AAFF';
+  } else if (totalScore >= 16) {
+    grade = '🥈 Proficient'; msg = 'Good showing! A few gaps, but solid overall knowledge.'; gradeColor = '#FFB800';
+  } else if (totalScore >= 10) {
+    grade = '🥉 Learner'; msg = 'A decent effort. Keep exploring CPQ and NetApp deeply.'; gradeColor = '#FF8C00';
+  } else {
+    grade = '📚 Rookie'; msg = 'No worries — every expert started here. Keep learning!'; gradeColor = '#FF4D6A';
+  }
+
+  document.getElementById('final-grade').textContent = grade;
+  document.getElementById('final-grade').style.color = gradeColor;
+  document.getElementById('final-msg').textContent = msg;
+
+  launchConfetti();
+}
+
+function showFinalSummary() {
+  // Build a text summary
+  const lines = allAnswers.map((a,i) => `Q${i+1}: ${a.correct?'✅':'❌'} ${a.q.substring(0,60)}...`).join('\n');
+  alert(`Final Score: ${totalScore}/30\n\nAnswer Summary:\n${lines}`);
+}
+
+// ===================== RESET =====================
+function resetQuiz() {
+  clearInterval(timerInterval);
+  document.getElementById('header-score').style.display = 'none';
+  showScreen('screen-welcome');
+}
+
+// ===================== CONFETTI =====================
+function launchConfetti() {
+  const wrap = document.getElementById('confetti-wrap');
+  wrap.innerHTML = '';
+  const colors = ['#0067C5','#00D4FF','#00C48C','#FFB800','#fff','#FF4D6A'];
+  for (let i = 0; i < 90; i++) {
+    const p = document.createElement('div');
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const size = Math.random() * 10 + 6;
+    const left = Math.random() * 100;
+    const delay = Math.random() * 3;
+    const dur = Math.random() * 3 + 3;
+    const isRect = Math.random() > 0.5;
+    p.style.cssText = `
+      position:absolute;
+      left:${left}%;
+      top:-20px;
+      width:${size}px;
+      height:${isRect ? size * 0.4 : size}px;
+      background:${color};
+      border-radius:${isRect ? '2px' : '50%'};
+      animation: confetti-fall ${dur}s ${delay}s linear forwards;
+      opacity:0.9;
+    `;
+    wrap.appendChild(p);
+  }
+
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes confetti-fall {
+      0% { transform: translateY(0) rotateZ(0deg); opacity:1; }
+      80% { opacity:1; }
+      100% { transform: translateY(110vh) rotateZ(${Math.random()*720}deg); opacity:0; }
+    }
+  `;
+  document.head.appendChild(style);
+}
+</script>
+</body>
+</html>
