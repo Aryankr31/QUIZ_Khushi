@@ -1021,6 +1021,7 @@ let questionsAnswered = 0;
 let timerInterval = null;
 let timeLeft = 30;
 let answered = false;
+let activeAns = 0;
 let sessionAnswers = [];
 let allAnswers = [];
 
@@ -1083,11 +1084,20 @@ function loadQuestion() {
   const progress = (globalQ / 30) * 100;
   document.getElementById('progress-bar').style.width = progress + '%';
 
+  // Shuffle options, track where correct answer ends up
+  const correctText = q.opts[q.ans];
+  const shuffledOpts = [...q.opts];
+  for (let i = shuffledOpts.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledOpts[i], shuffledOpts[j]] = [shuffledOpts[j], shuffledOpts[i]];
+  }
+  activeAns = shuffledOpts.indexOf(correctText);
+
   // Options
   const grid = document.getElementById('options-grid');
   grid.innerHTML = '';
   const letters = ['A','B','C','D'];
-  q.opts.forEach((opt, i) => {
+  shuffledOpts.forEach((opt, i) => {
     const btn = document.createElement('button');
     btn.className = 'option-btn';
     btn.innerHTML = `<span class="option-letter">${letters[i]}</span>${opt}`;
@@ -1149,7 +1159,7 @@ function timeExpired() {
   const q = sessions[currentSession][currentQInSession];
   const btns = document.querySelectorAll('.option-btn');
   btns.forEach(b => b.disabled = true);
-  btns[q.ans].classList.add('reveal');
+  btns[activeAns].classList.add('reveal');
 
   showFeedback('timeout', `⏰ Time's Up! Correct: ${q.opts[q.ans]}`);
   sessionAnswers.push({ q: q.q, correct: false, answer: null, correctAns: q.opts[q.ans], bonus: false });
@@ -1171,7 +1181,7 @@ function selectOption(idx) {
   btns.forEach(b => b.disabled = true);
   questionsAnswered++;
 
-  if (idx === q.ans) {
+  if (idx === activeAns) {
     btns[idx].classList.add('correct');
     sessionScore++;
     totalScore++;
@@ -1186,11 +1196,11 @@ function selectOption(idx) {
       updateHeaderScore();
       showFeedback('correct', `✅ Correct! +1 Mark`);
     }
-    sessionAnswers.push({ q: q.q, correct: true, answer: q.opts[idx], correctAns: q.opts[q.ans], bonus: isLightningFast });
-    allAnswers.push({ q: q.q, correct: true, answer: q.opts[idx], correctAns: q.opts[q.ans], bonus: isLightningFast });
+    sessionAnswers.push({ q: q.q, correct: true, answer: q.opts[q.ans], correctAns: q.opts[q.ans], bonus: isLightningFast });
+    allAnswers.push({ q: q.q, correct: true, answer: q.opts[q.ans], correctAns: q.opts[q.ans], bonus: isLightningFast });
   } else {
     btns[idx].classList.add('wrong');
-    btns[q.ans].classList.add('reveal');
+    btns[activeAns].classList.add('reveal');
     updateHeaderScore();
     showFeedback('wrong', `❌ Incorrect. Correct answer: ${q.opts[q.ans]}`);
     sessionAnswers.push({ q: q.q, correct: false, answer: q.opts[idx], correctAns: q.opts[q.ans], bonus: false });
