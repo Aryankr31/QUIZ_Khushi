@@ -1029,9 +1029,15 @@ const CIRCUMFERENCE = 175.93;
 
 // ===================== BUILD SESSIONS =====================
 function buildSessions() {
+  // Fisher-Yates shuffle — random mix of topics every session
+  const shuffled = [...ALL_QUESTIONS];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
   sessions = [];
   for (let i = 0; i < 6; i++) {
-    sessions.push(ALL_QUESTIONS.slice(i * 5, i * 5 + 5));
+    sessions.push(shuffled.slice(i * 5, i * 5 + 5));
   }
 }
 
