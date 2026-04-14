@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>NetApp CPQ Quiz Challenge</title>
+<title>NetApp Tech Quiz Challenge</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
 <style>
   :root {
@@ -666,7 +666,7 @@
       </svg>
       <span class="logo-text">NetApp</span>
     </div>
-    <div class="header-badge">CPQ Quiz Challenge</div>
+    <div class="header-badge">Tech Quiz Challenge</div>
     <div class="header-score" id="header-score" style="display:none">
       Score: <span id="hdr-score-val">0</span>/<span id="hdr-total-val">0</span>
     </div>
@@ -677,11 +677,11 @@
 
     <!-- WELCOME SCREEN -->
     <div class="screen" id="screen-welcome">
-      <div class="welcome-tag">⚡ Internship Showcase 2026</div>
-      <h1 class="welcome-title">NetApp<br><em>CPQ Quiz</em></h1>
+      <div class="welcome-tag">⚡ Internship Showcase 2025</div>
+      <h1 class="welcome-title">NetApp<br><em>Tech Quiz</em></h1>
       <p class="welcome-sub">
-        Test your knowledge on CPQ Automation, NetApp technology, and the latest AI buzz.
-        6 sessions · 5 questions each · 30 marks total.
+        Test your knowledge on Python, REST APIs, AI fundamentals, AI news, and NetApp technology.
+        6 sessions · 5 questions each · 30 marks + ⚡ speed bonuses!
       </p>
 
       <div class="rules-grid">
@@ -711,6 +711,13 @@
           <div>
             <div class="rule-title">No Going Back</div>
             <div class="rule-desc">Once an option is selected or time expires, the answer is locked in.</div>
+          </div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-icon">⚡</div>
+          <div>
+            <div class="rule-title">Speed Bonus</div>
+            <div class="rule-desc">Answer correctly within 5 seconds and earn an extra bonus mark on top!</div>
           </div>
         </div>
       </div>
@@ -791,7 +798,7 @@
     <div class="screen" id="screen-final">
       <div class="confetti-wrap" id="confetti-wrap"></div>
       <div class="final-score-big" id="final-score-big">0</div>
-      <div class="final-label">out of 30 marks</div>
+      <div class="final-label" id="final-label">out of 30 marks</div>
 
       <div class="final-grade-card">
         <div class="final-grade" id="final-grade">🏆</div>
@@ -810,196 +817,196 @@
 <script>
 // ===================== QUESTION BANK (30 Questions, 6 Sessions of 5) =====================
 const ALL_QUESTIONS = [
-  // ── SESSION 1: CPQ Fundamentals ──
+  // ── SESSION 1: Python Fundamentals ──
   {
-    q: "What does the 'C' in CPQ stand for in enterprise sales automation?",
-    opts: ["Configure", "Calculate", "Collaborate", "Consolidate"],
+    q: "What is the output of `bool([])` in Python?",
+    opts: ["False", "True", "None", "TypeError"],
     ans: 0,
-    cat: "CPQ"
+    cat: "Python"
   },
   {
-    q: "In CPQ systems, which component ensures the selected product options are technically compatible before quoting?",
-    opts: ["Configuration engine", "Approval workflow", "Price waterfall", "Discount matrix"],
+    q: "Which Python list method removes and returns the last element?",
+    opts: ["pop()", "remove()", "discard()", "delete()"],
     ans: 0,
-    cat: "CPQ"
+    cat: "Python"
   },
   {
-    q: "What is a 'price waterfall' in CPQ automation primarily used for?",
-    opts: ["Visualizing all price adjustments from list to net price", "Tracking invoice history", "Generating discount approval emails", "Mapping product configurations"],
+    q: "What does `range(2, 10, 3)` produce?",
+    opts: ["[2, 5, 8]", "[2, 4, 6, 8]", "[2, 5, 8, 10]", "[3, 6, 9]"],
     ans: 0,
-    cat: "CPQ"
+    cat: "Python"
   },
   {
-    q: "In NetApp's CPQ context, a 'bundle' most accurately refers to:",
-    opts: ["A group of products sold as a single unit", "A batch of customer orders", "An automated discount rule", "A configuration template for services"],
+    q: "Which of these Python data types is IMMUTABLE?",
+    opts: ["tuple", "list", "dict", "set"],
     ans: 0,
-    cat: "CPQ"
+    cat: "Python"
   },
   {
-    q: "Which Salesforce product is most commonly integrated for enterprise CPQ workflows?",
-    opts: ["Salesforce Revenue Cloud", "Salesforce Service Cloud", "Salesforce Marketing Cloud", "Salesforce Commerce Cloud"],
+    q: "What does `**kwargs` allow in a Python function definition?",
+    opts: ["Accept any number of keyword arguments", "Unpack a list into positional args", "Define default positional parameters", "Pass arguments in fixed keyword order only"],
     ans: 0,
-    cat: "CPQ"
-  },
-
-  // ── SESSION 2: NetApp Products & Technology ──
-  {
-    q: "What is NetApp's flagship storage operating system that runs across on-premises and cloud environments?",
-    opts: ["ONTAP", "StorageGRID", "Element OS", "SANtricity"],
-    ans: 0,
-    cat: "NetApp"
-  },
-  {
-    q: "NetApp's BlueXP platform is primarily designed for:",
-    opts: ["Unified management of hybrid multi-cloud data infrastructure", "Automated sales quoting and pricing", "AI-powered customer support automation", "Real-time network traffic monitoring"],
-    ans: 0,
-    cat: "NetApp"
-  },
-  {
-    q: "Which NetApp service provides fully managed cloud-native file storage on AWS?",
-    opts: ["Amazon FSx for NetApp ONTAP", "NetApp Cloud Volumes ONTAP", "NetApp StorageGRID", "NetApp Keystone"],
-    ans: 0,
-    cat: "NetApp"
-  },
-  {
-    q: "NetApp's 'Keystone' offering is best described as:",
-    opts: ["A storage-as-a-service subscription model", "A cloud security compliance tool", "A hybrid cloud AI analytics platform", "A SAN switch automation framework"],
-    ans: 0,
-    cat: "NetApp"
-  },
-  {
-    q: "In which year was NetApp (Network Appliance) officially founded?",
-    opts: ["1992", "1988", "1995", "1999"],
-    ans: 0,
-    cat: "NetApp"
+    cat: "Python"
   },
 
-  // ── SESSION 3: CPQ Automation & Workflow ──
+  // ── SESSION 2: REST APIs & Web ──
   {
-    q: "In CPQ automation, 'guided selling' primarily helps sales reps to:",
-    opts: ["Recommend optimal products based on customer needs", "Auto-generate purchase orders", "Approve discounts without manager sign-off", "Sync pricing with the ERP system"],
+    q: "Which HTTP status code means 'Not Found'?",
+    opts: ["404", "403", "400", "408"],
     ans: 0,
-    cat: "CPQ"
+    cat: "REST API"
   },
   {
-    q: "Which CPQ process step involves setting different price levels for different customer tiers?",
-    opts: ["Pricing rules engine", "Product catalog management", "Quote approval workflow", "Revenue recognition module"],
+    q: "What does a REST API's 'stateless' constraint mean?",
+    opts: ["Each request must be self-contained; server stores no session state", "API endpoints never change their URL structure", "The server caches all client responses permanently", "All requests from a client always return identical responses"],
     ans: 0,
-    cat: "CPQ"
+    cat: "REST API"
   },
   {
-    q: "What does 'deal desk' refer to in the context of enterprise CPQ automation?",
-    opts: ["A team that reviews non-standard deals and pricing exceptions", "A dashboard displaying real-time quote status", "An automated discount approval bot", "A customer self-service quoting portal"],
+    q: "Which HTTP method is designed to PARTIALLY update an existing resource?",
+    opts: ["PATCH", "PUT", "POST", "UPDATE"],
     ans: 0,
-    cat: "CPQ"
+    cat: "REST API"
   },
   {
-    q: "Which integration is most critical for CPQ to ensure accurate product availability during quoting?",
-    opts: ["ERP system integration", "CRM email integration", "ITSM ticketing integration", "BI reporting integration"],
+    q: "What does the request header `Content-Type: application/json` tell the server?",
+    opts: ["The request body is formatted as JSON", "The server must respond only in JSON", "The API accepts exclusively JSON endpoints", "The client expects a JSON-encoded 200 response"],
     ans: 0,
-    cat: "CPQ"
+    cat: "REST API"
   },
   {
-    q: "In CPQ, what is 'constraint-based configuration' designed to prevent?",
-    opts: ["Technically invalid or incompatible product combinations", "Unauthorized discounts above threshold", "Duplicate quote creation for same customer", "Expired price book usage"],
+    q: "Which HTTP status code indicates a successful request where a NEW resource was created?",
+    opts: ["201 Created", "200 OK", "202 Accepted", "204 No Content"],
     ans: 0,
-    cat: "CPQ"
+    cat: "REST API"
   },
 
-  // ── SESSION 4: AI & Industry Buzz ──
+  // ── SESSION 3: AI Basics ──
   {
-    q: "What does RAG stand for in modern AI architectures used for enterprise search?",
-    opts: ["Retrieval-Augmented Generation", "Recurrent Adaptive Gating", "Real-time AI Generation", "Regression-based Answer Grounding"],
+    q: "What does LLM stand for in the context of modern AI?",
+    opts: ["Large Language Model", "Linear Learning Machine", "Layered Logic Module", "Long-form Language Mechanism"],
     ans: 0,
     cat: "AI"
   },
   {
-    q: "Which company developed the Claude AI assistant, a leading competitor to ChatGPT?",
-    opts: ["Anthropic", "Google DeepMind", "Meta AI", "Mistral AI"],
+    q: "In machine learning, what is 'overfitting'?",
+    opts: ["A model memorizes training data but fails on unseen data", "A model trains for too many epochs and slows down", "A model's output size exceeds memory limits", "A model performs well on test data but poorly on training data"],
     ans: 0,
     cat: "AI"
   },
   {
-    q: "In AI terminology, a 'hallucination' refers to:",
-    opts: ["Confident AI responses that are factually incorrect", "Overfitting of training data in neural networks", "Latency spikes during model inference", "Memory leaks in transformer architectures"],
+    q: "What is the role of an 'activation function' in a neural network?",
+    opts: ["Introduce non-linearity so the model learns complex patterns", "Store learned weights between training runs", "Normalize the input dataset before training begins", "Control the speed of the backpropagation algorithm"],
     ans: 0,
     cat: "AI"
   },
   {
-    q: "What is the primary purpose of 'fine-tuning' a large language model (LLM)?",
-    opts: ["Adapting a pre-trained model to a specific domain or task", "Compressing the model for edge deployment", "Adding a memory layer to prevent hallucinations", "Converting the model from float32 to int8 precision"],
+    q: "What does 'prompt engineering' mean in the context of AI?",
+    opts: ["Crafting effective inputs to guide AI model outputs", "Programming GPU hardware accelerators for inference", "Writing low-level system code to deploy AI models", "Training a model exclusively on synthetic prompt data"],
     ans: 0,
     cat: "AI"
   },
   {
-    q: "Which AI technique allows models to use external tools like search engines or calculators at runtime?",
-    opts: ["Agentic / Tool-use frameworks", "Transfer learning", "Mixture of Experts (MoE)", "Reinforcement Learning from Human Feedback (RLHF)"],
+    q: "What is 'fine-tuning' an AI language model?",
+    opts: ["Further training a pre-trained model on domain-specific data", "Reducing model file size for deployment on mobile devices", "Adding memory layers to reduce hallucination rate", "Converting model weights from float32 to int8 precision"],
     ans: 0,
     cat: "AI"
   },
 
-  // ── SESSION 5: Cloud, Storage & Data ──
+  // ── SESSION 4: AI News & Current Affairs ──
   {
-    q: "What is the primary advantage of NetApp's 'data fabric' strategy?",
-    opts: ["Consistent data management and mobility across hybrid and multi-cloud environments", "Reducing hardware costs by virtualizing all storage", "Centralizing AI workloads in a single data center", "Automating cloud billing across AWS, Azure, and GCP"],
+    q: "Which company created ChatGPT?",
+    opts: ["OpenAI", "Anthropic", "Google DeepMind", "Meta AI"],
+    ans: 0,
+    cat: "AI News"
+  },
+  {
+    q: "What is the name of Google's most advanced AI model family launched in 2024?",
+    opts: ["Gemini", "Bard Ultra", "PaLM 3", "LaMDA 2"],
+    ans: 0,
+    cat: "AI News"
+  },
+  {
+    q: "Meta's widely-used open-source AI model series (used by millions of developers) is called:",
+    opts: ["Llama", "Falcon", "Mistral", "Alpaca"],
+    ans: 0,
+    cat: "AI News"
+  },
+  {
+    q: "What does 'multimodal AI' refer to?",
+    opts: ["AI that processes multiple data types — text, image, audio, and video", "An AI model trained across multiple programming languages simultaneously", "A model that runs in parallel across multiple cloud regions", "An AI with separate response personalities for different user roles"],
+    ans: 0,
+    cat: "AI News"
+  },
+  {
+    q: "GitHub Copilot is an AI tool primarily built to help developers with:",
+    opts: ["Writing and auto-completing code", "Reviewing pull requests for security vulnerabilities", "Auto-generating project documentation from git commits", "Scheduling and managing GitHub Actions CI/CD workflows"],
+    ans: 0,
+    cat: "AI News"
+  },
+
+  // ── SESSION 5: NetApp Technology ──
+  {
+    q: "NetApp primarily specializes in which technology domain?",
+    opts: ["Data storage and management solutions", "Network switching and routing hardware", "Cloud-based CRM and sales software", "Cybersecurity threat detection platforms"],
     ans: 0,
     cat: "NetApp"
   },
   {
-    q: "In cloud storage tiering, which tier provides the lowest latency for frequently accessed data?",
-    opts: ["Hot tier (NVMe/SSD)", "Warm tier (HDD)", "Cold tier (object storage)", "Archive tier (tape/Glacier)"],
-    ans: 0,
-    cat: "Cloud"
-  },
-  {
-    q: "Kubernetes is primarily used to manage:",
-    opts: ["Containerized application workloads and their lifecycle", "Virtual machine provisioning in private clouds", "Storage network switch configurations", "Relational database clustering"],
-    ans: 0,
-    cat: "Cloud"
-  },
-  {
-    q: "NetApp's Spot by NetApp (formerly Spot.io) focuses on optimizing:",
-    opts: ["Cloud compute cost and resource utilization using spot instances", "On-premises SAN network performance", "AI model training pipelines on GPUs", "Disaster recovery failover automation"],
+    q: "NetApp ONTAP is best described as:",
+    opts: ["A storage operating system managing data across flash, disk, and cloud", "A network monitoring and performance analytics tool", "A cloud-native application development framework", "A next-gen firewall and intrusion detection system"],
     ans: 0,
     cat: "NetApp"
   },
   {
-    q: "Which protocol does NetApp ONTAP primarily use for NAS (Network Attached Storage) access?",
-    opts: ["NFS and SMB/CIFS", "iSCSI and Fibre Channel", "S3 and Swift", "FTP and SFTP"],
+    q: "NetApp's BlueXP platform provides:",
+    opts: ["A single control plane for managing hybrid and multi-cloud data infrastructure", "Automated Kubernetes application deployments at scale", "Real-time network threat intelligence and analysis", "AI model training infrastructure across distributed GPU clusters"],
+    ans: 0,
+    cat: "NetApp"
+  },
+  {
+    q: "NetApp's Keystone service is best described as:",
+    opts: ["A storage-as-a-service subscription model", "An enterprise key management and encryption solution", "A data compliance framework for NAS environments", "A Kubernetes-native storage orchestration add-on"],
+    ans: 0,
+    cat: "NetApp"
+  },
+  {
+    q: "Which major cloud platforms does NetApp Cloud Volumes ONTAP support?",
+    opts: ["AWS, Microsoft Azure, and Google Cloud", "Only AWS and Microsoft Azure", "Only Google Cloud and AWS", "Exclusively on-premises data centers"],
     ans: 0,
     cat: "NetApp"
   },
 
-  // ── SESSION 6: Mixed Advanced ──
+  // ── SESSION 6: General Tech & Mixed ──
   {
-    q: "In enterprise CPQ, 'subscription billing' automation primarily addresses which business need?",
-    opts: ["Managing recurring revenue, renewals, and mid-term contract amendments", "Automating hardware procurement for data centers", "Scheduling product demos for enterprise clients", "Generating compliance audit trails for finance teams"],
+    q: "What does 'API' stand for?",
+    opts: ["Application Programming Interface", "Automated Program Integration", "Application Process Interconnect", "Advanced Protocol Interface"],
     ans: 0,
-    cat: "CPQ"
+    cat: "Tech"
   },
   {
-    q: "What is 'vector search' most commonly used for in enterprise AI applications?",
-    opts: ["Semantic similarity search across large document datasets", "Binary search in relational databases", "Image compression in storage systems", "Real-time network packet inspection"],
+    q: "What is the primary purpose of a load balancer in web infrastructure?",
+    opts: ["Distribute incoming traffic across multiple servers for availability", "Compress data before it is stored in the database layer", "Encrypt API requests traveling between client and server", "Cache database queries to accelerate read-heavy workloads"],
     ans: 0,
-    cat: "AI"
+    cat: "Tech"
   },
   {
-    q: "NetApp's ONTAP AI platform is specifically optimized for:",
-    opts: ["AI/ML training and inference workloads with NVIDIA DGX systems", "Automated SAN provisioning across data centers", "Cloud cost governance and FinOps reporting", "DevOps CI/CD pipeline orchestration"],
+    q: "In networking, what does 'latency' specifically measure?",
+    opts: ["Time delay between sending a request and receiving a response", "Maximum data transfer throughput of a network link", "Number of simultaneous connections a server can sustain", "CPU overhead added during TLS/SSL data encryption"],
     ans: 0,
-    cat: "NetApp"
+    cat: "Tech"
   },
   {
-    q: "In CPQ, 'revenue recognition' automation is most closely associated with compliance under:",
-    opts: ["ASC 606 / IFRS 15 accounting standards", "SOC 2 Type II security certification", "GDPR data privacy regulation", "PCI-DSS payment card industry standard"],
+    q: "What does 'CI/CD' stand for in modern software development?",
+    opts: ["Continuous Integration / Continuous Deployment", "Code Inspection / Code Distribution", "Centralized Integration / Centralized Delivery", "Component Integration / Component Deployment"],
     ans: 0,
-    cat: "CPQ"
+    cat: "Tech"
   },
   {
-    q: "Which emerging AI capability allows a model to autonomously break down a goal into steps and execute them sequentially?",
-    opts: ["Agentic AI / AI Agents", "Multimodal inference", "Chain-of-thought prompting only", "Few-shot in-context learning"],
+    q: "What is a 'container' in cloud computing (e.g., Docker)?",
+    opts: ["A lightweight package bundling an app with all its dependencies", "A virtual machine running a full isolated operating system", "A cloud storage bucket for static application assets", "A serverless function triggered by scheduled HTTP events"],
     ans: 0,
-    cat: "AI"
+    cat: "Tech"
   }
 ];
 
@@ -1009,6 +1016,8 @@ let currentSession = 0;
 let currentQInSession = 0;
 let sessionScore = 0;
 let totalScore = 0;
+let bonusScore = 0;
+let questionsAnswered = 0;
 let timerInterval = null;
 let timeLeft = 30;
 let answered = false;
@@ -1041,6 +1050,8 @@ function startQuiz() {
   currentQInSession = 0;
   sessionScore = 0;
   totalScore = 0;
+  bonusScore = 0;
+  questionsAnswered = 0;
   sessionAnswers = [];
   allAnswers = [];
   document.getElementById('header-score').style.display = 'flex';
@@ -1135,8 +1146,10 @@ function timeExpired() {
   btns[q.ans].classList.add('reveal');
 
   showFeedback('timeout', `⏰ Time's Up! Correct: ${q.opts[q.ans]}`);
-  sessionAnswers.push({ q: q.q, correct: false, answer: null, correctAns: q.opts[q.ans] });
-  allAnswers.push({ q: q.q, correct: false, answer: null, correctAns: q.opts[q.ans] });
+  sessionAnswers.push({ q: q.q, correct: false, answer: null, correctAns: q.opts[q.ans], bonus: false });
+  allAnswers.push({ q: q.q, correct: false, answer: null, correctAns: q.opts[q.ans], bonus: false });
+  questionsAnswered++;
+  updateHeaderScore();
   document.getElementById('btn-next').className = 'btn-next visible';
 }
 
@@ -1144,26 +1157,38 @@ function timeExpired() {
 function selectOption(idx) {
   if (answered) return;
   answered = true;
+  const timeTaken = TIMER_MAX - timeLeft; // seconds elapsed
   clearInterval(timerInterval);
 
   const q = sessions[currentSession][currentQInSession];
   const btns = document.querySelectorAll('.option-btn');
   btns.forEach(b => b.disabled = true);
+  questionsAnswered++;
 
   if (idx === q.ans) {
     btns[idx].classList.add('correct');
     sessionScore++;
     totalScore++;
-    updateHeaderScore();
-    showFeedback('correct', '✅ Correct! +1 Mark');
-    sessionAnswers.push({ q: q.q, correct: true, answer: q.opts[idx], correctAns: q.opts[q.ans] });
-    allAnswers.push({ q: q.q, correct: true, answer: q.opts[idx], correctAns: q.opts[q.ans] });
+
+    // Bonus mark for answering within 5 seconds
+    const isLightningFast = timeTaken <= 5;
+    if (isLightningFast) {
+      bonusScore++;
+      updateHeaderScore();
+      showFeedback('correct', `✅ Correct! +1 Mark   ⚡ SPEED BONUS +1 (answered in ${timeTaken}s!)`);
+    } else {
+      updateHeaderScore();
+      showFeedback('correct', `✅ Correct! +1 Mark`);
+    }
+    sessionAnswers.push({ q: q.q, correct: true, answer: q.opts[idx], correctAns: q.opts[q.ans], bonus: isLightningFast });
+    allAnswers.push({ q: q.q, correct: true, answer: q.opts[idx], correctAns: q.opts[q.ans], bonus: isLightningFast });
   } else {
     btns[idx].classList.add('wrong');
     btns[q.ans].classList.add('reveal');
-    showFeedback('wrong', `❌ Incorrect. Correct: ${q.opts[q.ans]}`);
-    sessionAnswers.push({ q: q.q, correct: false, answer: q.opts[idx], correctAns: q.opts[q.ans] });
-    allAnswers.push({ q: q.q, correct: false, answer: q.opts[idx], correctAns: q.opts[q.ans] });
+    updateHeaderScore();
+    showFeedback('wrong', `❌ Incorrect. Correct answer: ${q.opts[q.ans]}`);
+    sessionAnswers.push({ q: q.q, correct: false, answer: q.opts[idx], correctAns: q.opts[q.ans], bonus: false });
+    allAnswers.push({ q: q.q, correct: false, answer: q.opts[idx], correctAns: q.opts[q.ans], bonus: false });
   }
 
   document.getElementById('btn-next').className = 'btn-next visible';
@@ -1176,8 +1201,8 @@ function showFeedback(type, msg) {
 }
 
 function updateHeaderScore() {
-  document.getElementById('hdr-score-val').textContent = totalScore;
-  document.getElementById('hdr-total-val').textContent = (currentSession * 5) + currentQInSession + 1;
+  document.getElementById('hdr-score-val').textContent = totalScore + bonusScore;
+  document.getElementById('hdr-total-val').textContent = 30;
 }
 
 // ===================== NEXT QUESTION =====================
@@ -1209,7 +1234,7 @@ function showSessionResult() {
   const titles = ['Excellent Round!','Great Job!','Not Bad!','Keep Pushing!','Tough Session!','Almost There!'];
   const idx = Math.min(5 - sessionScore, 5);
   document.getElementById('session-result-title').textContent = sessionScore === 5 ? '🔥 Perfect Session!' : titles[idx];
-  document.getElementById('session-result-sub').textContent = `You scored ${sessionScore} out of 5 this round. Running total: ${totalScore} marks`;
+  document.getElementById('session-result-sub').textContent = `You scored ${sessionScore} out of 5 this round. Running total: ${totalScore} marks${bonusScore > 0 ? ` + ${bonusScore} speed bonus` : ''}`;
 
   // Review
   const review = document.getElementById('session-review');
@@ -1249,19 +1274,24 @@ function continueQuiz() {
 // ===================== FINAL RESULTS =====================
 function showFinalResults() {
   showScreen('screen-final');
-  document.getElementById('final-score-big').textContent = totalScore;
+  const grandTotal = totalScore + bonusScore;
+  document.getElementById('final-score-big').textContent = grandTotal;
+  document.getElementById('final-label').textContent =
+    bonusScore > 0
+      ? `${totalScore}/30 correct  +  ⚡ ${bonusScore} speed bonus`
+      : 'out of 30 marks';
 
   let grade, msg, gradeColor;
-  if (totalScore >= 27) {
-    grade = '🏆 Legend'; msg = 'Outstanding performance! You clearly mastered CPQ at NetApp.'; gradeColor = '#00C48C';
-  } else if (totalScore >= 22) {
-    grade = '🥇 Expert'; msg = 'Impressive! You have a strong command of NetApp & CPQ concepts.'; gradeColor = '#00AAFF';
-  } else if (totalScore >= 16) {
-    grade = '🥈 Proficient'; msg = 'Good showing! A few gaps, but solid overall knowledge.'; gradeColor = '#FFB800';
-  } else if (totalScore >= 10) {
-    grade = '🥉 Learner'; msg = 'A decent effort. Keep exploring CPQ and NetApp deeply.'; gradeColor = '#FF8C00';
+  if (grandTotal >= 28) {
+    grade = '🏆 Legend'; msg = 'Absolutely phenomenal! Perfect command of tech, AI, and NetApp.'; gradeColor = '#00C48C';
+  } else if (grandTotal >= 22) {
+    grade = '🥇 Expert'; msg = 'Impressive! Strong across Python, REST, AI and NetApp concepts.'; gradeColor = '#00AAFF';
+  } else if (grandTotal >= 16) {
+    grade = '🥈 Proficient'; msg = 'Good showing! Solid foundation with a few gaps to explore.'; gradeColor = '#FFB800';
+  } else if (grandTotal >= 10) {
+    grade = '🥉 Learner'; msg = 'Decent effort. Keep digging into AI, APIs, and cloud tech!'; gradeColor = '#FF8C00';
   } else {
-    grade = '📚 Rookie'; msg = 'No worries — every expert started here. Keep learning!'; gradeColor = '#FF4D6A';
+    grade = '📚 Rookie'; msg = 'Every expert started here. Keep learning and come back!'; gradeColor = '#FF4D6A';
   }
 
   document.getElementById('final-grade').textContent = grade;
